@@ -10,33 +10,109 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as SupportRouteImport } from './routes/support'
+import { Route as AuthenticatedCabinetRouteImport } from './routes/_authenticated/cabinet'
+import { Route as CarsSlugRouteImport } from './routes/cars.$slug'
+import { Route as AuthenticatedPaymentBookingIdRouteImport } from './routes/_authenticated/payment.$bookingId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SupportRoute = SupportRouteImport.update({
+  id: '/support',
+  path: '/support',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedCabinetRoute = AuthenticatedCabinetRouteImport.update({
+  id: '/cabinet',
+  path: '/cabinet',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const CarsSlugRoute = CarsSlugRouteImport.update({
+  id: '/cars/$slug',
+  path: '/cars/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedPaymentBookingIdRoute =
+  AuthenticatedPaymentBookingIdRouteImport.update({
+    id: '/payment/$bookingId',
+    path: '/payment/$bookingId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/support': typeof SupportRoute
+  '/cabinet': typeof AuthenticatedCabinetRoute
+  '/cars/$slug': typeof CarsSlugRoute
+  '/payment/$bookingId': typeof AuthenticatedPaymentBookingIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/support': typeof SupportRoute
+  '/cabinet': typeof AuthenticatedCabinetRoute
+  '/cars/$slug': typeof CarsSlugRoute
+  '/payment/$bookingId': typeof AuthenticatedPaymentBookingIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/support': typeof SupportRoute
+  '/_authenticated/cabinet': typeof AuthenticatedCabinetRoute
+  '/cars/$slug': typeof CarsSlugRoute
+  '/_authenticated/payment/$bookingId': typeof AuthenticatedPaymentBookingIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/support'
+    | '/cabinet'
+    | '/cars/$slug'
+    | '/payment/$bookingId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/support'
+    | '/cabinet'
+    | '/cars/$slug'
+    | '/payment/$bookingId'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/support'
+    | '/_authenticated/cabinet'
+    | '/cars/$slug'
+    | '/_authenticated/payment/$bookingId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  SupportRoute: typeof SupportRoute
+  CarsSlugRoute: typeof CarsSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +124,70 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/support': {
+      id: '/support'
+      path: '/support'
+      fullPath: '/support'
+      preLoaderRoute: typeof SupportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/cabinet': {
+      id: '/_authenticated/cabinet'
+      path: '/cabinet'
+      fullPath: '/cabinet'
+      preLoaderRoute: typeof AuthenticatedCabinetRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/cars/$slug': {
+      id: '/cars/$slug'
+      path: '/cars/$slug'
+      fullPath: '/cars/$slug'
+      preLoaderRoute: typeof CarsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/payment/$bookingId': {
+      id: '/_authenticated/payment/$bookingId'
+      path: '/payment/$bookingId'
+      fullPath: '/payment/$bookingId'
+      preLoaderRoute: typeof AuthenticatedPaymentBookingIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedCabinetRoute: typeof AuthenticatedCabinetRoute
+  AuthenticatedPaymentBookingIdRoute: typeof AuthenticatedPaymentBookingIdRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedCabinetRoute: AuthenticatedCabinetRoute,
+  AuthenticatedPaymentBookingIdRoute: AuthenticatedPaymentBookingIdRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
+  SupportRoute: SupportRoute,
+  CarsSlugRoute: CarsSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
