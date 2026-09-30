@@ -14,7 +14,241 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      bookings: {
+        Row: {
+          car_id: string
+          comment: string | null
+          created_at: string
+          deposit_kzt: number
+          expires_at: string
+          id: string
+          status: Database["public"]["Enums"]["booking_status"]
+          user_id: string
+        }
+        Insert: {
+          car_id: string
+          comment?: string | null
+          created_at?: string
+          deposit_kzt?: number
+          expires_at?: string
+          id?: string
+          status?: Database["public"]["Enums"]["booking_status"]
+          user_id: string
+        }
+        Update: {
+          car_id?: string
+          comment?: string | null
+          created_at?: string
+          deposit_kzt?: number
+          expires_at?: string
+          id?: string
+          status?: Database["public"]["Enums"]["booking_status"]
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookings_car_id_fkey"
+            columns: ["car_id"]
+            isOneToOne: false
+            referencedRelation: "cars"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cars: {
+        Row: {
+          body: string
+          brand: string
+          created_at: string
+          description: string | null
+          fuel: string
+          horsepower: number
+          id: string
+          mileage_km: number
+          model: string
+          price_kzt: number
+          slug: string
+          status: Database["public"]["Enums"]["car_status"]
+          transmission: string
+          trim: string | null
+          year: number
+        }
+        Insert: {
+          body: string
+          brand: string
+          created_at?: string
+          description?: string | null
+          fuel?: string
+          horsepower?: number
+          id?: string
+          mileage_km?: number
+          model: string
+          price_kzt: number
+          slug: string
+          status?: Database["public"]["Enums"]["car_status"]
+          transmission?: string
+          trim?: string | null
+          year: number
+        }
+        Update: {
+          body?: string
+          brand?: string
+          created_at?: string
+          description?: string | null
+          fuel?: string
+          horsepower?: number
+          id?: string
+          mileage_km?: number
+          model?: string
+          price_kzt?: number
+          slug?: string
+          status?: Database["public"]["Enums"]["car_status"]
+          transmission?: string
+          trim?: string | null
+          year?: number
+        }
+        Relationships: []
+      }
+      payments: {
+        Row: {
+          amount_kzt: number
+          booking_id: string | null
+          car_id: string
+          created_at: string
+          discount_kzt: number
+          extras: Json
+          id: string
+          method: string
+          order_no: string
+          status: Database["public"]["Enums"]["payment_status"]
+          user_id: string
+        }
+        Insert: {
+          amount_kzt: number
+          booking_id?: string | null
+          car_id: string
+          created_at?: string
+          discount_kzt?: number
+          extras?: Json
+          id?: string
+          method?: string
+          order_no: string
+          status?: Database["public"]["Enums"]["payment_status"]
+          user_id: string
+        }
+        Update: {
+          amount_kzt?: number
+          booking_id?: string | null
+          car_id?: string
+          created_at?: string
+          discount_kzt?: number
+          extras?: Json
+          id?: string
+          method?: string
+          order_no?: string
+          status?: Database["public"]["Enums"]["payment_status"]
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payments_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payments_car_id_fkey"
+            columns: ["car_id"]
+            isOneToOne: false
+            referencedRelation: "cars"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          full_name: string | null
+          id: string
+          phone: string | null
+        }
+        Insert: {
+          created_at?: string
+          full_name?: string | null
+          id: string
+          phone?: string | null
+        }
+        Update: {
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+        }
+        Relationships: []
+      }
+      support_messages: {
+        Row: {
+          author: string
+          body: string
+          created_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          author?: string
+          body: string
+          created_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          author?: string
+          body?: string
+          created_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      test_drives: {
+        Row: {
+          car_id: string
+          comment: string | null
+          created_at: string
+          id: string
+          scheduled_at: string
+          status: Database["public"]["Enums"]["test_drive_status"]
+          user_id: string
+        }
+        Insert: {
+          car_id: string
+          comment?: string | null
+          created_at?: string
+          id?: string
+          scheduled_at: string
+          status?: Database["public"]["Enums"]["test_drive_status"]
+          user_id: string
+        }
+        Update: {
+          car_id?: string
+          comment?: string | null
+          created_at?: string
+          id?: string
+          scheduled_at?: string
+          status?: Database["public"]["Enums"]["test_drive_status"]
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "test_drives_car_id_fkey"
+            columns: ["car_id"]
+            isOneToOne: false
+            referencedRelation: "cars"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +257,15 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      booking_status:
+        | "created"
+        | "confirmed"
+        | "completed"
+        | "cancelled"
+        | "expired"
+      car_status: "available" | "booked" | "sold"
+      payment_status: "pending" | "paid" | "failed"
+      test_drive_status: "planned" | "confirmed" | "done" | "cancelled"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +392,17 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      booking_status: [
+        "created",
+        "confirmed",
+        "completed",
+        "cancelled",
+        "expired",
+      ],
+      car_status: ["available", "booked", "sold"],
+      payment_status: ["pending", "paid", "failed"],
+      test_drive_status: ["planned", "confirmed", "done", "cancelled"],
+    },
   },
 } as const
