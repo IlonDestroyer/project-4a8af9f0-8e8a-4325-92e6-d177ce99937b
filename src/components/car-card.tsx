@@ -13,7 +13,7 @@ export function CarCard({ car }: { car: Car }) {
     <article className="overflow-hidden rounded-2xl bg-surface backdrop-blur-xl ring-1 ring-hairline transition hover:-translate-y-1 hover:bg-surface-2">
       <Link to="/cars/$slug" params={{ slug: car.slug }} className="block">
         <img
-          src={carImage(car.slug)}
+          src={carImage(car.slug, car.image_url)}
           alt={carTitle(car)}
           loading="lazy"
           width={1024}

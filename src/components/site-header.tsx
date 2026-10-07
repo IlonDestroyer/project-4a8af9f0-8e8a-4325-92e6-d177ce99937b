@@ -2,10 +2,11 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@/lib/auth";
+import { useAuth, useIsAdmin } from "@/lib/auth";
 
 export function SiteHeader() {
   const { user } = useAuth();
+  const isAdmin = useIsAdmin();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -50,6 +51,15 @@ export function SiteHeader() {
           >
             Поддержка
           </Link>
+          {isAdmin && (
+            <Link
+              to="/admin"
+              className="rounded-lg px-3 py-2 text-muted-foreground transition-colors hover:text-foreground"
+              activeProps={{ className: "rounded-lg px-3 py-2 bg-surface-2 font-medium text-foreground" }}
+            >
+              Управление
+            </Link>
+          )}
         </nav>
 
         <div className="ml-auto flex items-center gap-2">

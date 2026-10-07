@@ -18,8 +18,8 @@ const images: Record<string, string> = {
   "hyundai-tucson-prestige": hyundaiTucson,
 };
 
-export function carImage(slug: string) {
-  return images[slug] ?? bmwX5;
+export function carImage(slug: string, imageUrl?: string | null) {
+  return imageUrl || images[slug] || bmwX5;
 }
 
 export function carTitle(car: Pick<Car, "brand" | "model" | "trim">) {

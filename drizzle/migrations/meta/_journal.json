@@ -8,6 +8,13 @@
       "when": 1790747546882,
       "tag": "0000_create_lastochka_schema",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1791352086776,
+      "tag": "0001_admin_roles",
+      "breakpoints": true
     }
   ]
 }

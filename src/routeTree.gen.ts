@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as SupportRouteImport } from './routes/support'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedCabinetRouteImport } from './routes/_authenticated/cabinet'
 import { Route as CarsSlugRouteImport } from './routes/cars.$slug'
 import { Route as AuthenticatedPaymentBookingIdRouteImport } from './routes/_authenticated/payment.$bookingId'
@@ -36,6 +37,11 @@ const SupportRoute = SupportRouteImport.update({
   path: '/support',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedCabinetRoute = AuthenticatedCabinetRouteImport.update({
   id: '/cabinet',
   path: '/cabinet',
@@ -57,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/support': typeof SupportRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/cabinet': typeof AuthenticatedCabinetRoute
   '/cars/$slug': typeof CarsSlugRoute
   '/payment/$bookingId': typeof AuthenticatedPaymentBookingIdRoute
@@ -65,6 +72,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/support': typeof SupportRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/cabinet': typeof AuthenticatedCabinetRoute
   '/cars/$slug': typeof CarsSlugRoute
   '/payment/$bookingId': typeof AuthenticatedPaymentBookingIdRoute
@@ -75,6 +83,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/support': typeof SupportRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/cabinet': typeof AuthenticatedCabinetRoute
   '/cars/$slug': typeof CarsSlugRoute
   '/_authenticated/payment/$bookingId': typeof AuthenticatedPaymentBookingIdRoute
@@ -85,6 +94,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/support'
+    | '/admin'
     | '/cabinet'
     | '/cars/$slug'
     | '/payment/$bookingId'
@@ -93,6 +103,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/support'
+    | '/admin'
     | '/cabinet'
     | '/cars/$slug'
     | '/payment/$bookingId'
@@ -102,6 +113,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/support'
+    | '/_authenticated/admin'
     | '/_authenticated/cabinet'
     | '/cars/$slug'
     | '/_authenticated/payment/$bookingId'
@@ -145,6 +157,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SupportRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/cabinet': {
       id: '/_authenticated/cabinet'
       path: '/cabinet'
@@ -170,11 +189,13 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
   AuthenticatedCabinetRoute: typeof AuthenticatedCabinetRoute
   AuthenticatedPaymentBookingIdRoute: typeof AuthenticatedPaymentBookingIdRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
   AuthenticatedCabinetRoute: AuthenticatedCabinetRoute,
   AuthenticatedPaymentBookingIdRoute: AuthenticatedPaymentBookingIdRoute,
 }
