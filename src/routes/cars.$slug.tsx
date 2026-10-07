@@ -132,7 +132,7 @@ function CarPage() {
       <div className="space-y-6">
         <div className="overflow-hidden rounded-2xl bg-surface ring-1 ring-hairline">
           <img
-            src={carImage(car.slug)}
+            src={carImage(car.slug, car.image_url)}
             alt={carTitle(car)}
             width={1024}
             height={640}
